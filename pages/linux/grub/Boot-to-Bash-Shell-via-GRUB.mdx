@@ -1,0 +1,30 @@
+---
+title: Boot the system directly into a Bash root shell from the grub bootloader
+---
+
+# Boot to Bash Shell via GRUB
+
+Hold down the left Shift key during reboot to bring up the GRUB menu Select (==highlight==) the GRUB boot menu entry you wish to use.
+
+Press `e` to edit the GRUB boot commands for the selected boot menu.
+
+You'll see something like this:
+
+![upload_224624c07c94ceaabd84b6df53e7ec15.png](/public/grub/upload_224624c07c94ceaabd84b6df53e7ec15.png)
+
+Scroll down and find the line starting with linux.
+At the end of the line, add :
+
+```shell
+rw init=/bin/bash
+```
+
+![upload_9fe4720e9311330841382baf31af4415.png](/public/grub/upload_9fe4720e9311330841382baf31af4415.png)
+
+Press `Ctrl+X` or `F10` to boot using these kernel options.
+
+<Note>
+  These changes are not persistent. Any changes to kernel boot options made in
+  this way will only affect the next boot, and only if you start that boot by
+  pressing `Ctrl+X` or F10 while still in GRUB edit mode.
+</Note>

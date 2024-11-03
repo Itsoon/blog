@@ -1,0 +1,26 @@
+.logo {
+  border-radius: 0.6rem;
+  margin-left: -0.5rem;
+  padding: 0 0.65rem 0 0.65rem;
+  transition:
+    transform 100ms ease-in-out,
+    background-color 100ms ease-in-out;
+}
+
+/* .logo > img { */
+/*   height: 1.5rem; */
+/* } */
+
+.logo span {
+  color: white;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.logo:hover {
+  background-color: rgba(var(--colors-bgLightest));
+}
+
+.logo:active {
+  transform: scale(1.05);
+}

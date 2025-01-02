@@ -1,0 +1,52 @@
+---
+title: List Users on Linux
+---
+
+# List Users on Linux
+
+> If you need to list all the users on your Linux system, you can use a few different methods to retrieve this information. Here are the most common approaches:
+
+## Method 1: Using `/etc/passwd`
+
+The `/etc/passwd` file contains information about the system's users. You can view it to find all usernames:
+
+```shell
+cat /etc/passwd
+```
+
+Each line in the file represents a user, for example:
+
+```
+root:x:0:0:root:/root:/bin/bash
+user1:x:1000:1000::/home/user1:/bin/bash
+user2:x:1001:1001::/home/user2:/bin/bash
+```
+
+In this example, the usernames are `root`, `user1`, and `user2`.
+
+### Using awk to Extract Usernames
+
+`awk` extract just the usernames from the `/etc/passwd` file, you can use awk to print the first field (the username) from each line:
+
+```shell
+awk -F: '{print $1}' /etc/passwd
+```
+
+## Method 2: Using getent passwd
+
+The getent command can retrieve the list of users from various sources, such as local files or network services like LDAP. To list all users, run:
+
+```shell
+getent passwd
+```
+This will provide similar output to the [cat /etc/passwd command](/blog/linux/list-users-linux#method-1-using-cat-etc-passwd).
+
+## Method 3: Using `ls /home`
+
+If your system uses the `/home` directory to store user files, you can list the user directories, which correspond to user accounts:
+
+```shell
+ls /home
+```
+
+This will show the directories in `/home`, each of which corresponds to a user account on the system.

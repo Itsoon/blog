@@ -1,0 +1,156 @@
+# Reset the root passwd under Linux
+
+> To reset a password on a Linux system, two common methods are often used: booting into a root shell via the GRUB menu and using a live CD/USB.
+
+> Booting into a root shell via GRUB: This method involves modifying the GRUB boot parameters to boot directly into a Bash shell as root, allowing you to reset the password from the command line. The prerequisites for this method are access to the GRUB menu and the ability to modify boot parameters.
+
+> Using a Live CD/USB: This method involves booting the system from a Live CD or USB, mounting the root partition of the installed system, and then using the passwd command to reset the password. The prerequisites are a Live CD/USB
+
+# Passwd Reset via GRUB bootloader
+
+Follow this guide [Booting into a Root Shell via GRUB](/blog/grub/Booting-into-a-Root-Shell-via-GRUB#booting-into-a-root-bash-shell-via-grub)
+
+Once inside the Root Shell, reset the password:
+```shell
+passwd <your_username>
+```
+
+Replace `<your_username>` with the name of the user account.  
+Enter the new password when prompted.
+
+<Tip>[List Users on Linux](/blog/linux/list-users-linux#list-users-on-linux)</Tip>
+
+# Passwd Reset via chroot Method
+
+<Steps>
+  <Steps.Step>
+    ### Choosing the right partition
+
+    Use the `lsblk` command to list the available block devices and identify the correct partition to mount.  
+    The example uses `/dev/sda1`, but it may vary depending on your setup.
+
+    ```shell
+    lsblk
+    ```
+
+    Example output:
+    ```
+    NAME        MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
+    nvme0n1     259:0    0 476,9G  0 disk 
+    ├─nvme0n1p1 259:1    0  60,6G  0 part 
+    ├─nvme0n1p2 259:2    0 415,6G  0 part /
+    └─nvme0n1p3 259:3    0   700M  0 part /boot/efi
+    ```
+  </Steps.Step>
+
+  <Steps.Step>
+    ### Mount the partition
+
+    <Note>
+    Ensure the mount directory exists before mounting a partition. The `/mnt` directory is an example and may not exist by default. You can create it or use another directory if needed.
+    </Note>
+
+    Create the directory:
+    ```shell
+    sudo mkdir /mnt
+    ```
+
+    Mount the partition:
+    ```shell
+    sudo mount /dev/sda1 /mnt
+    ```
+
+    <Warning>
+    Replace `/dev/sda1` with the correct device name identified using the `lsblk` command.
+    </Warning>
+
+    After mounting, verify the contents to ensure it’s the correct partition:
+    ```shell
+    ls /mnt
+    ```
+
+    You should see directories such as: `bin`, `boot`, `dev`, `etc`, `home`, `usr`, and `var`.  
+    If these directories are missing, verify that you have mounted the correct partition.  
+    If you see only `/media` or `/lost+found`, it’s likely the wrong partition.
+  </Steps.Step>
+
+  <Steps.Step>
+    ### Chroot into the mounted system
+
+    > `chroot` (short for "change root") modifies the apparent root directory of a process, creating an isolated environment. It’s commonly used for:
+    >
+    > - System Recovery
+    > - Testing environments
+    > - Process Isolation
+    >
+    > Note: It requires administrative privileges and is not a full security isolation tool.
+
+    Enter the chroot environment:
+    ```shell
+    sudo chroot /mnt
+    ```
+
+    If `/usr/bin/bash` is missing, try using `/bin/sh` instead:
+    ```shell
+    sudo chroot /mnt /bin/sh
+    ```
+
+    Once inside the chroot, reset the password:
+    ```shell
+    passwd <your_username>
+    ```
+
+    Replace `<your_username>` with the name of the user account.  
+    Enter the new password when prompted.
+
+
+<Tip>[List Users on Linux](/blog/linux/list-users-linux#list-users-on-linux)</Tip>
+
+    Exit the chroot environment:
+    ```shell
+    exit
+    ```
+  </Steps.Step>
+
+  <Steps.Step>
+    ### Check and repair the filesystem (if necessary)
+
+    If `chroot` still fails or the system behaves unexpectedly, it might be due to filesystem corruption.  
+
+    Unmount the partition first:
+    ```shell
+    sudo umount /mnt
+    ```
+
+    Run the filesystem check:
+    ```shell
+    sudo fsck /dev/sda1
+    ```
+
+    Replace `/dev/sda1` with the correct partition identifier.  
+    Follow the prompts to repair any detected errors.
+
+    After repairs, remount the partition and retry:
+    ```shell
+    sudo mount /dev/sda1 /mnt
+    sudo chroot /mnt
+    ```
+  </Steps.Step>
+
+  <Steps.Step>
+    ### Mount critical system directories (if needed)
+
+    If your Linux installation uses separate partitions for critical directories (e.g., `/usr`, `/dev`), you need to bind-mount them before using `chroot`.  
+
+    ```shell
+    sudo mount --bind /dev /mnt/dev
+    sudo mount --bind /proc /mnt/proc
+    sudo mount --bind /sys /mnt/sys
+    ```
+
+    Then attempt to `chroot` again:
+    ```shell
+    sudo chroot /mnt
+    ```
+  </Steps.Step>
+</Steps>

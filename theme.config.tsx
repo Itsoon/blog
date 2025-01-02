@@ -9,8 +9,7 @@ import {
   link,
   type SiteComponent,
 } from "@neato/guider/theme";
-import { Logo } from "./components/Logo";
-
+import { Logo } from "./components/Logo.tsx";
 const template = siteTemplate({
   github: "Itsoon/blog",
   settings: {
@@ -57,19 +56,25 @@ export default defineTheme([
       }),
     ],
   }),
-  site("linux", {
+  site("blog", {
     extends: [template],
     directories: [
       directory("en", {
         sidebar: [
-          group("Getting started", [link("Welcome", "/linux/welcome")]),
+          group("Getting started", [link("Welcome", "/blog/welcome")]),
           separator(),
-          link.nested("Grub", [
-            link(
-              "Boot to Bash Shell via GRUB",
-              "/linux/grub/Boot-to-Bash-Shell-via-GRUB",
-            ),
+
+          group("Linux", [
+            link("Root passwd reset Linux", "/blog/linux/root-passwd-reset-linux"),
+            link("List Users on Linux", "/blog/linux/list-users-linux"),
+            link.nested("Grub", [
+              link(
+                "Booting into a Root Shell via GRUB",
+                "/blog/linux/grub/Booting-into-a-Root-Shell-via-GRUB",
+              ),
+            ]),
           ]),
+
         ],
       }),
     ],

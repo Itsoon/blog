@@ -11,8 +11,8 @@ export default function LandingPage() {
   return (
     <GuiderLayout meta={{ layout: "page" }}>
       <Hero>
-        <Hero.Badge title="new" to="/linux/blog/Boot-to-Bash-Shell-via-GRUB">
-          Boot to Bash Shell via GRUB
+        <Hero.Badge title="new" to="/blog/linux/root-passwd-reset-linux">
+          Root passwd Reset Linux 
         </Hero.Badge>
         <Hero.Title>I write what I learn.</Hero.Title>
         <Hero.Subtitle>Contribute on github</Hero.Subtitle>

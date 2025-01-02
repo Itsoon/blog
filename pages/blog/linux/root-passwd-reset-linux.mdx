@@ -11,6 +11,7 @@
 Follow this guide [Booting into a Root Shell via GRUB](/blog/grub/Booting-into-a-Root-Shell-via-GRUB#booting-into-a-root-bash-shell-via-grub)
 
 Once inside the Root Shell, reset the password:
+
 ```shell
 passwd <your_username>
 ```
@@ -18,7 +19,9 @@ passwd <your_username>
 Replace `<your_username>` with the name of the user account.  
 Enter the new password when prompted.
 
-<Tip>[List Users on Linux](/blog/linux/list-users-linux#list-users-on-linux)</Tip>
+<Tip>
+  [List Users on Linux](/blog/linux/list-users-linux#list-users-on-linux)
+</Tip>
 
 # Passwd Reset via chroot Method
 
@@ -26,7 +29,7 @@ Enter the new password when prompted.
   <Steps.Step>
     ### Choosing the right partition
 
-    Use the `lsblk` command to list the available block devices and identify the correct partition to mount.  
+    Use the `lsblk` command to list the available block devices and identify the correct partition to mount.
     The example uses `/dev/sda1`, but it may vary depending on your setup.
 
     ```shell
@@ -36,11 +39,12 @@ Enter the new password when prompted.
     Example output:
     ```
     NAME        MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
-    nvme0n1     259:0    0 476,9G  0 disk 
-    ├─nvme0n1p1 259:1    0  60,6G  0 part 
+    nvme0n1     259:0    0 476,9G  0 disk
+    ├─nvme0n1p1 259:1    0  60,6G  0 part
     ├─nvme0n1p2 259:2    0 415,6G  0 part /
     └─nvme0n1p3 259:3    0   700M  0 part /boot/efi
     ```
+
   </Steps.Step>
 
   <Steps.Step>
@@ -69,9 +73,10 @@ Enter the new password when prompted.
     ls /mnt
     ```
 
-    You should see directories such as: `bin`, `boot`, `dev`, `etc`, `home`, `usr`, and `var`.  
-    If these directories are missing, verify that you have mounted the correct partition.  
+    You should see directories such as: `bin`, `boot`, `dev`, `etc`, `home`, `usr`, and `var`.
+    If these directories are missing, verify that you have mounted the correct partition.
     If you see only `/media` or `/lost+found`, it’s likely the wrong partition.
+
   </Steps.Step>
 
   <Steps.Step>
@@ -100,22 +105,25 @@ Enter the new password when prompted.
     passwd <your_username>
     ```
 
-    Replace `<your_username>` with the name of the user account.  
+    Replace `<your_username>` with the name of the user account.
     Enter the new password when prompted.
 
-
-<Tip>[List Users on Linux](/blog/linux/list-users-linux#list-users-on-linux)</Tip>
+<Tip>
+  [List Users on Linux](/blog/linux/list-users-linux#list-users-on-linux)
+</Tip>
 
     Exit the chroot environment:
     ```shell
     exit
     ```
+
   </Steps.Step>
 
   <Steps.Step>
+
     ### Check and repair the filesystem (if necessary)
 
-    If `chroot` still fails or the system behaves unexpectedly, it might be due to filesystem corruption.  
+    If `chroot` still fails or the system behaves unexpectedly, it might be due to filesystem corruption.
 
     Unmount the partition first:
     ```shell
@@ -127,7 +135,7 @@ Enter the new password when prompted.
     sudo fsck /dev/sda1
     ```
 
-    Replace `/dev/sda1` with the correct partition identifier.  
+    Replace `/dev/sda1` with the correct partition identifier.
     Follow the prompts to repair any detected errors.
 
     After repairs, remount the partition and retry:
@@ -135,12 +143,13 @@ Enter the new password when prompted.
     sudo mount /dev/sda1 /mnt
     sudo chroot /mnt
     ```
+
   </Steps.Step>
 
-  <Steps.Step>
-    ### Mount critical system directories (if needed)
+<Steps.Step>
+### Mount critical system directories (if needed)
 
-    If your Linux installation uses separate partitions for critical directories (e.g., `/usr`, `/dev`), you need to bind-mount them before using `chroot`.  
+    If your Linux installation uses separate partitions for critical directories (e.g., `/usr`, `/dev`), you need to bind-mount them before using `chroot`.
 
     ```shell
     sudo mount --bind /dev /mnt/dev
@@ -152,5 +161,6 @@ Enter the new password when prompted.
     ```shell
     sudo chroot /mnt
     ```
-  </Steps.Step>
+
+</Steps.Step>
 </Steps>

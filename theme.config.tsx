@@ -9,7 +9,7 @@ import {
   link,
   type SiteComponent,
 } from "@neato/guider/theme";
-import { Logo } from "./components/Logo.tsx";
+import { Logo } from "./components/Logo";
 const template = siteTemplate({
   github: "Itsoon/blog",
   settings: {

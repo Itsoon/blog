@@ -1,15 +1,20 @@
-# Reset the root passwd under Linux
+# Reset the root passwd under Linux (2 methods)
 
 > To reset a password on a Linux system, two common methods are often used: booting into a root shell via the GRUB menu and using a live CD/USB.
 
-> Booting into a root shell via GRUB: This method involves modifying the GRUB boot parameters to boot directly into a Bash shell as root, allowing you to reset the password from the command line. The prerequisites for this method are access to the GRUB menu and the ability to modify boot parameters.
+> 1. Booting into a root shell via GRUB: This method involves modifying the GRUB boot parameters to boot directly into a Bash shell as root, allowing you to reset the password from the command line. The prerequisites for this method are access to the GRUB menu and the ability to modify boot parameters.
+> 2. Using a Live CD/USB: This method involves booting the system from a Live CD or USB, mounting the root partition of the installed system, and then using the passwd command to reset the password. The prerequisites are a Live CD/USB
 
-> Using a Live CD/USB: This method involves booting the system from a Live CD or USB, mounting the root partition of the installed system, and then using the passwd command to reset the password. The prerequisites are a Live CD/USB
+---
 
 # Passwd Reset via GRUB bootloader
 
-Follow this guide [Booting into a Root Shell via GRUB](/blog/grub/Booting-into-a-Root-Shell-via-GRUB#booting-into-a-root-bash-shell-via-grub)
+<Steps>
+<Steps.Step>
+Follow this guide [Booting into a Root Shell via GRUB](/blog/linux/grub/Booting-into-a-Root-Shell-via-GRUB)
+</Steps.Step>
 
+<Steps.Step>
 Once inside the Root Shell, reset the password:
 
 ```shell
@@ -19,9 +24,14 @@ passwd <your_username>
 Replace `<your_username>` with the name of the user account.  
 Enter the new password when prompted.
 
+</Steps.Step>
+</Steps>
+
 <Tip>
   [List Users on Linux](/blog/linux/list-users-linux#list-users-on-linux)
 </Tip>
+
+---
 
 # Passwd Reset via chroot Method
 
@@ -118,49 +128,48 @@ Enter the new password when prompted.
     ```
 
   </Steps.Step>
+</Steps>
 
-  <Steps.Step>
+# Additional steps that may solve some of your problems
 
-    ### Check and repair the filesystem (if necessary)
+### Check and repair the filesystem (if necessary)
 
-    If `chroot` still fails or the system behaves unexpectedly, it might be due to filesystem corruption.
+If `chroot` still fails or the system behaves unexpectedly, it might be due to filesystem corruption.
 
-    Unmount the partition first:
-    ```shell
-    sudo umount /mnt
-    ```
+Unmount the partition first:
 
-    Run the filesystem check:
-    ```shell
-    sudo fsck /dev/sda1
-    ```
+```shell
+sudo umount /mnt
+```
 
-    Replace `/dev/sda1` with the correct partition identifier.
-    Follow the prompts to repair any detected errors.
+Run the filesystem check:
 
-    After repairs, remount the partition and retry:
-    ```shell
-    sudo mount /dev/sda1 /mnt
-    sudo chroot /mnt
-    ```
+```shell
+sudo fsck /dev/sda1
+```
 
-  </Steps.Step>
+Replace `/dev/sda1` with the correct partition identifier.
+Follow the prompts to repair any detected errors.
 
-<Steps.Step>
+After repairs, remount the partition and retry:
+
+```shell
+sudo mount /dev/sda1 /mnt
+sudo chroot /mnt
+```
+
 ### Mount critical system directories (if needed)
 
-    If your Linux installation uses separate partitions for critical directories (e.g., `/usr`, `/dev`), you need to bind-mount them before using `chroot`.
+If your Linux installation uses separate partitions for critical directories (e.g., `/usr`, `/dev`), you need to bind-mount them before using `chroot`.
 
-    ```shell
-    sudo mount --bind /dev /mnt/dev
-    sudo mount --bind /proc /mnt/proc
-    sudo mount --bind /sys /mnt/sys
-    ```
+```shell
+sudo mount --bind /dev /mnt/dev
+sudo mount --bind /proc /mnt/proc
+sudo mount --bind /sys /mnt/sys
+```
 
-    Then attempt to `chroot` again:
-    ```shell
-    sudo chroot /mnt
-    ```
+Then attempt to `chroot` again:
 
-</Steps.Step>
-</Steps>
+```shell
+sudo chroot /mnt
+```

@@ -65,7 +65,7 @@ export default defineTheme([
           separator(),
 
           group("Linux", [
-            link("Root passwd reset Linux", "/blog/linux/root-passwd-reset-linux"),
+            link("Reset a forgotten root passwd", "/blog/linux/reset-forgotten-root-passwd"),
             link("List Users on Linux", "/blog/linux/list-users-linux"),
             link.nested("Grub", [
               link(
@@ -74,6 +74,12 @@ export default defineTheme([
               ),
             ]),
           ]),
+          group("Windows", [
+            link("Reset admin passwd", "/blog/windows/reset-admin-passwd-windows")
+          ]),
+          group("Computer Basics", [
+            link("Convert binary to decimal", "/blog/Computer-Basics/binary-to-decimal")
+          ])
 
         ],
       }),

@@ -1,4 +1,9 @@
-# Reset the root passwd under Linux (2 methods)
+---
+title: "Reset a forgotten root passwd in Linux (2 methods)"
+description: "A detailed guide to resetting the root password on a Linux OS"
+---
+
+# Reset a forgotten root passwd in Linux (2 methods)
 
 > To reset a password on a Linux system, two common methods are often used: booting into a root shell via the GRUB menu and using a live CD/USB.
 
@@ -55,10 +60,10 @@ Enter the new password when prompted.
     └─nvme0n1p3 259:3    0   700M  0 part /boot/efi
     ```
 
-  </Steps.Step>
+</Steps.Step>
 
-  <Steps.Step>
-    ### Mount the partition
+<Steps.Step> 
+### Mount the partition
 
     <Note>
     Ensure the mount directory exists before mounting a partition. The `/mnt` directory is an example and may not exist by default. You can create it or use another directory if needed.
@@ -87,10 +92,10 @@ Enter the new password when prompted.
     If these directories are missing, verify that you have mounted the correct partition.
     If you see only `/media` or `/lost+found`, it’s likely the wrong partition.
 
-  </Steps.Step>
+</Steps.Step>
 
-  <Steps.Step>
-    ### Chroot into the mounted system
+<Steps.Step> 
+### Chroot into the mounted system
 
     > `chroot` (short for "change root") modifies the apparent root directory of a process, creating an isolated environment. It’s commonly used for:
     >
@@ -127,10 +132,12 @@ Enter the new password when prompted.
     exit
     ```
 
-  </Steps.Step>
+</Steps.Step>
 </Steps>
 
-# Additional steps that may solve some of your problems
+---
+
+# Troubleshooting Tips
 
 ### Check and repair the filesystem (if necessary)
 

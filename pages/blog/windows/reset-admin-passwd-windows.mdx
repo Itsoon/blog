@@ -1,0 +1,108 @@
+---
+title: "Reset a forgotten admin password in Windows 10-11"
+description: "A detailed guide to resetting the admin password on a Windows 10-11 PC using a bootable USB and CMD."
+---
+
+# Reset a forgotten admin password in Windows 10-11
+
+> If you've forgotten the admin password on your Windows 10-11 PC, you can reset it by booting into a recovery environment using a bootable USB. This guide covers two methods: modifying CMD and utilman files, and using advanced recovery tools.
+
+## 🚨 Prerequisites
+
+- A bootable USB drive with a Windows 10 installation image.
+- Access to your PC's BIOS to set the USB drive as the boot device.
+- Make sure there is no bitlocker
+
+---
+
+# Method 1: Password Reset via CMD Swap
+
+This method involves swapping the `cmd.exe` and `utilman.exe` files in the `System32` folder to gain access to the command prompt from the login screen.
+
+<Steps>
+<Steps.Step>
+### Step 1: Boot from the USB Drive
+1. Insert your bootable USB drive.
+2. Restart your PC and enter the BIOS/UEFI setup (usually by pressing `F2`, `F12`, `DEL`, or `ESC` during startup).
+3. Set the USB drive as the primary boot device and save changes.
+4. When prompted, choose "Repair your computer" > "Troubleshoot" > "Command Prompt".
+</Steps.Step>
+
+<Steps.Step>
+### Step 2: Navigate to the System32 Directory
+Once you're in the command prompt, navigate to the `System32` directory:
+
+```cmd
+D:
+cd Windows\System32
+```
+
+<Note>Replace `D:` with the letter of your Windows partition.</Note>
+
+</Steps.Step>
+
+<Steps.Step>
+### Step 3: Rename the Files
+Run the following commands to swap `cmd.exe` and `utilman.exe`:
+
+```cmd
+ren cmd.exe utilman2.exe
+ren utilman.exe cmd.exe
+ren utilman2.exe utilman.exe
+```
+
+Explanation:
+
+- `ren cmd.exe utilman2.exe` renames `cmd.exe` to `utilman2.exe`.
+- `ren utilman.exe cmd.exe` replaces `utilman.exe` with `cmd.exe`.
+- `ren utilman2.exe utilman.exe` restores `utilman.exe`.
+
+</Steps.Step>
+
+<Steps.Step>
+  ### Step 4: Restart and Open CMD from the Login Screen 1. Restart your PC. 2.
+  At the login screen, click the accessibility icon (bottom right). This will
+  open a command prompt.
+</Steps.Step>
+
+<Steps.Step>
+### Step 5: Change the Admin Password
+In the command prompt, run:
+
+```cmd
+net user Administrator NewPassword
+```
+
+_Replace `Administrator` with your username and `NewPassword` with the new password._
+
+</Steps.Step>
+
+<Steps.Step>
+### Step 6: Restore the Original Files
+After resetting the password, boot back into the recovery environment and restore the original files:
+
+```cmd
+D:
+cd Windows\System32
+ren utilman.exe cmd.exe
+ren utilman2.exe utilman.exe
+```
+
+</Steps.Step>
+</Steps>
+
+---
+
+# Troubleshooting Tips
+
+- **Disk Letter Confusion:** If `D:\Windows\System32` doesn't exist, use `diskpart` to find the correct drive letter.
+  ```cmd
+  diskpart
+  list volume
+  exit
+  ```
+- **Files Missing:** If you can't find `cmd.exe` or `utilman.exe`, your Windows installation might be corrupted.
+
+# Conclusion
+
+With these methods, you can reset your Windows 10-11 admin password and regain access to your PC. Use these techniques responsibly and ensure that you restore any modified system files to their original state.

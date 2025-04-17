@@ -11,8 +11,8 @@ export default function LandingPage() {
   return (
     <GuiderLayout meta={{ layout: "page" }}>
       <Hero>
-        <Hero.Badge title="new" to="/blog/linux/root-passwd-reset-linux">
-          Root passwd Reset Linux 
+        <Hero.Badge title="new" to="/blog/Computer-Basics/binary-to-decimal">
+          Convert binary to decimal
         </Hero.Badge>
         <Hero.Title>I write what I learn.</Hero.Title>
         <Hero.Subtitle>Contribute on github</Hero.Subtitle>
